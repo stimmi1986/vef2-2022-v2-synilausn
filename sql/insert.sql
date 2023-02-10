@@ -7,3 +7,5 @@ INSERT INTO registrations (name, comment, event) VALUES ('Jón Jónsson', null, 
 INSERT INTO registrations (name, comment, event) VALUES ('Guðrún Guðrúnar', 'verður vefforritað?', 1);
 
 INSERT INTO users (username, password) VALUES ('admin', '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii');
+
+INSERT INTO vip (username, password) VALUES ('Stimmi', '1234');
