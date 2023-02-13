@@ -1,10 +1,11 @@
 import express from 'express';
+import { adminRouter } from '../routes/admin-routes.js';
 import { createUser } from './users.js';
 
-const router = express.Router();
+adminRouter = express.Router();
 
 router.get('/signup', (req, res) => {
-  res.render('/signup');
+  res.render('signup');
 });
 
 router.post('/signup', async (req, res) => {
@@ -17,8 +18,8 @@ router.post('/signup', async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    res.render('/admin/login', { error: 'Gat ekki búið til notanda' });
+    res.render('/admin/signup', { error: 'Gat ekki búið til notanda' });
   }
 });
 
-export default router;
+export default adminRouter;
