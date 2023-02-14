@@ -27,10 +27,10 @@ async function signup(req, res) {
     const validation = validationResult(req);
 
     if (!validation.isEmpty()) {
-      return res.render('/admin/signup', {
+      return res.render('signup', {
         message,
         title: 'Nýskráning',
-        data: { name },
+        data: { name, email },
         errors: validation.errors,
       });
     }
@@ -39,13 +39,13 @@ async function signup(req, res) {
     const user = await createUser({ name, password: hashedPassword });
 
     if (user) {
-      return res.redirect('/admin/login');
+      return res.redirect('/login');
     }
 
     message = 'Villa kom upp við að nýskrá notanda';
   }
 
-  return res.render('/admin/signup', {
+  return res.render('signup', {
     message,
     title: 'Nýskráning',
     data: {},
@@ -53,8 +53,9 @@ async function signup(req, res) {
   });
 }
 
-adminRouter.get('/admin/signup', catchErrors(signup));
-adminRouter.post('/admin/signup', registrationValidationMiddleware, catchErrors(signup));
+adminRouter.get('/signup', catchErrors(signup));
+adminRouter.post('/signup', registrationValidationMiddleware, catchErrors(signup));
+
 
 async function index(req, res) {
   const events = await listEvents();
