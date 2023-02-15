@@ -54,25 +54,8 @@ async function signup(req, res) {
   });
 }
 
-function signup(req, res){
-  if (req.isAuthenticated()) {
-    return res.redirect('/admin');
-  }
-  let message = '';
-
-  // Athugum hvort einhver skilaboð séu til í session, ef svo er birtum þau
-  // og hreinsum skilaboð
-  if (req.session.messages && req.session.messages.length > 0) {
-    message = req.session.messages.join(', ');
-    req.session.messages = [];
-  }
-
-  return res.render('login', { message, title: 'Innskráning' });
-}
-
 adminRouter.get('/signup', catchErrors(signup));
 adminRouter.post('/signup', registrationValidationMiddleware, catchErrors(signup));
-
 
 async function index(req, res) {
   const events = await listEvents();
