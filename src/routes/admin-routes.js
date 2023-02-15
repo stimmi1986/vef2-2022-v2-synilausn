@@ -9,6 +9,7 @@ import {
   updateEvent,
 } from '../lib/db.js';
 import passport, { ensureLoggedIn } from '../lib/login.js';
+import handleSignup from '../lib/sign-up.js';
 import { slugify } from '../lib/slugify.js';
 import {
   registrationValidationMiddleware,
@@ -255,6 +256,7 @@ adminRouter.get('/logout', (req, res) => {
 adminRouter.get('/:slug', ensureLoggedIn, catchErrors(eventRoute));
 adminRouter.post(
   '/:slug',
+  handleSignup,
   ensureLoggedIn,
   registrationValidationMiddleware('description'),
   xssSanitizationMiddleware('description'),
