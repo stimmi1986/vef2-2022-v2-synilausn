@@ -61,5 +61,5 @@ try {
 }
 export default handleSignup;
 
-indexRouter.get('/signup', catchErrors(signup));
-indexRouter.post('/signup', registrationValidationMiddleware, catchErrors(signup));
+indexRouter.get('/index/signup', catchErrors(signup));
+indexRouter.post('/index/signup', registrationValidationMiddleware, catchErrors(signup));
