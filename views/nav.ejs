@@ -1,0 +1,15 @@
+<nav>
+  <% if (currentPage > 1) { %>
+    <a href="#" class="previous">Previous</a>
+  <% } %>
+
+  <% for (var i = 1; i <= numPages; i++) { %>
+    <a href="#" class="page-number <%= (i === currentPage) ? 'active' : '' %>">
+      <%= i %>
+    </a>
+  <% } %>
+
+  <% if (currentPage < numPages) { %>
+    <a href="#" class="next">Next</a>
+  <% } %>
+</nav>
