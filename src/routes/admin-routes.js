@@ -30,7 +30,7 @@ async function signup(req, res) {
       return res.render('signup', {
         message,
         title: 'Nýskráning',
-        data: { name, email },
+        data: { name, password },
         errors: validation.errors,
       });
     }
@@ -40,6 +40,7 @@ async function signup(req, res) {
 
     if (user) {
       return res.redirect('/login');
+
     }
 
     message = 'Villa kom upp við að nýskrá notanda';
@@ -51,6 +52,22 @@ async function signup(req, res) {
     data: {},
     errors: [],
   });
+}
+
+function signup(req, res){
+  if (req.isAuthenticated()) {
+    return res.redirect('/admin');
+  }
+  let message = '';
+
+  // Athugum hvort einhver skilaboð séu til í session, ef svo er birtum þau
+  // og hreinsum skilaboð
+  if (req.session.messages && req.session.messages.length > 0) {
+    message = req.session.messages.join(', ');
+    req.session.messages = [];
+  }
+
+  return res.render('login', { message, title: 'Innskráning' });
 }
 
 adminRouter.get('/signup', catchErrors(signup));
