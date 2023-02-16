@@ -5,9 +5,9 @@ import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import passport from './lib/login.js';
 import { isInvalid } from './lib/template-helpers.js';
+import { createUser } from './lib/users.js';
 import { adminRouter } from './routes/admin-routes.js';
 import { indexRouter } from './routes/index-routes.js';
-import { createUser } from './users.js';
 
 dotenv.config();
 
