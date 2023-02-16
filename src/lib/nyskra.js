@@ -1,6 +1,7 @@
 import passport from 'passport';
 import { Strategy } from 'passport-local';
 import { createUser, findById, findByUsername } from './users.js';
+import { registrationValidationMiddleware } from './validation.js';
 
 passport.use('/admin/signup', new Strategy(async (username, password, done) => {
   try {
@@ -50,3 +51,6 @@ export const signUp = (req, res, next) => {
     return res.json(user);
   })(req, res, next);
 };
+
+adminRouter.get('/signup', catchErrors(signUp));
+adminRouter.post('/signup', registrationValidationMiddleware, catchErrors(signUp));
