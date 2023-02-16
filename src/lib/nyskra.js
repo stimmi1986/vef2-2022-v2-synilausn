@@ -3,7 +3,7 @@ import { Strategy } from 'passport-local';
 import { createUser, findById, findByUsername } from './users.js';
 import { registrationValidationMiddleware } from './validation.js';
 
-passport.use('/admin/signup', new Strategy(async (username, password, done) => {
+passport.use('/signup', new Strategy(async (username, password, done) => {
   try {
     const user = await findByUsername(username);
     if (user) {
@@ -36,11 +36,11 @@ export function ensureLoggedIn(req, res, next) {
     return next();
   }
 
-  return res.redirect(`/admin/login`);
+  return res.redirect(`/admin/signup`);
 }
 
 export const signUp = (req, res, next) => {
-  passport.authenticate('/admin/signup', (err, user, info) => {
+  passport.authenticate('/signup', (err, user, info) => {
     if (err) {
       console.error(err);
       return next(err);
