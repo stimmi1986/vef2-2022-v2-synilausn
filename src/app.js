@@ -7,6 +7,7 @@ import passport from './lib/login.js';
 import { isInvalid } from './lib/template-helpers.js';
 import { adminRouter } from './routes/admin-routes.js';
 import { indexRouter } from './routes/index-routes.js';
+import { createUser } from './users.js';
 
 dotenv.config();
 
@@ -64,6 +65,26 @@ app.use((err, req, res, next) => {
   const title = 'Villa kom upp';
   res.status(500).render('error', { title });
 });
+
+///////////////////////////////
+
+app.get('/admin/signup', (req, res) => {
+  res.render('signup');
+});
+
+app.post('/admin/signup', async (req, res) => {
+  const { username, password } = req.body;
+  
+  const user = await createUser(username, password);
+
+  if (user) {
+    res.redirect('/admin/login');
+  } else {
+    res.render('signup', { message: 'Ekki tókst að búa til notanda.' });
+  }
+});
+
+///////////////////////////////
 
 app.listen(port, () => {
   console.info(`Server running at http://localhost:${port}/`);
