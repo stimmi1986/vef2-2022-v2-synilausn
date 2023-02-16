@@ -9,6 +9,7 @@ import {
   updateEvent,
 } from '../lib/db.js';
 import passport, { ensureLoggedIn } from '../lib/login.js';
+import { handleSignup } from '../lib/signup.js';
 import { slugify } from '../lib/slugify.js';
 import {
   registrationValidationMiddleware,
@@ -226,6 +227,22 @@ adminRouter.post(
   catchErrors(validationCheck),
   sanitizationMiddleware('description'),
   catchErrors(registerRoute)
+);
+
+adminRouter.get('/signup', handleSignup);
+adminRouter.post(
+  '/signup',
+
+  // Þetta notar strat að ofan til að skrá notanda inn
+  passport.authenticate('local', {
+    failureMessage: 'Notandanafn eða lykilorð vitlaust.',
+    failureRedirect: '/admin/signup',
+  }),
+
+  // Ef við komumst hingað var notandi skráður inn, senda á /admin
+  (req, res) => {
+    res.redirect('/admin/login');
+  }
 );
 
 adminRouter.get('/login', login);
