@@ -18,52 +18,6 @@ import {
 
 export const adminRouter = express.Router();
 
-async function signup(req, res) {
-  let message = '';
-
-  if (req.method === 'POST') {
-    const { name, password } = req.body;
-
-    const validation = validationResult(req);
-
-    if (!validation.isEmpty()) {
-      return res.render('signup', {
-        message,
-        title: 'Nýskráning',
-        data: { name, password },
-        errors: validation.errors,
-      });
-    }
-
-    const hashedPassword = await hashPassword(password);
-    const user = await createUser({ name, password: hashedPassword });
-
-    if (user) {
-      return res.redirect('/login');
-    }
-
-    message = 'Villa kom upp við að nýskrá notanda';
-  }
-
-  return res.render('signup', {
-    message,
-    title: 'Nýskráning',
-    data: {},
-    errors: [],
-  });
-}
-
-function signup(req, res){
-  if (req.isAuthenticated()) {
-    
-  }
-
-}
-
-adminRouter.get('/signup', catchErrors(signup));
-adminRouter.post('/signup', registrationValidationMiddleware, catchErrors(signup));
-
-
 async function index(req, res) {
   const events = await listEvents();
   const { user: { username } = {} } = req || {};
