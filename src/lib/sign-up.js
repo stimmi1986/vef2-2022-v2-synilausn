@@ -1,4 +1,4 @@
-import { createUser } from './users.js';
+/*import { createUser } from './users.js';
 
 export async function handleSignup(req, res) {
   const { username, password } = req.body;
@@ -67,3 +67,4 @@ function signup(req, res){
 
 adminRouter.get('/signup', catchErrors(signup));
 adminRouter.post('/signup', registrationValidationMiddleware, catchErrors(signup));
+*/

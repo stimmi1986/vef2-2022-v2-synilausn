@@ -36,7 +36,7 @@ export function ensureLoggedIn(req, res, next) {
     return next();
   }
 
-  return res.redirect(`/admin/signup`);
+  return res.redirect(`/signup`);
 }
 
 export const signUp = (req, res, next) => {
