@@ -11,6 +11,7 @@ import {
 import passport, { ensureLoggedIn } from '../lib/login.js';
 import { handleSignup } from '../lib/signup.js';
 import { slugify } from '../lib/slugify.js';
+import { createUser } from '../lib/users.js';
 import {
   registrationValidationMiddleware,
   sanitizationMiddleware,
@@ -55,7 +56,10 @@ async function signup(req, res) {
 }
 
 adminRouter.get('/signup', catchErrors(signup));
-adminRouter.post('/signup', registrationValidationMiddleware, catchErrors(signup));
+adminRouter.post('/signup',
+createUser,
+registrationValidationMiddleware,
+catchErrors(signup));
 
 async function index(req, res) {
   const events = await listEvents();

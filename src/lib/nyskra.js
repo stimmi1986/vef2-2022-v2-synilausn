@@ -52,8 +52,8 @@ export const signUp = (req, res, next) => {
   })(req, res, next);
 };
 
-indexRoutes.get('/signup', (req, res) => {
-    res.render('signup'); 
+adminRoutes.get('/signup', (req, res) => {
+    res.render('login'); 
   });
 
   */
