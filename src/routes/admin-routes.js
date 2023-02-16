@@ -9,9 +9,7 @@ import {
   updateEvent,
 } from '../lib/db.js';
 import passport, { ensureLoggedIn } from '../lib/login.js';
-import { handleSignup } from '../lib/signup.js';
 import { slugify } from '../lib/slugify.js';
-import { createUser } from '../lib/users.js';
 import {
   registrationValidationMiddleware,
   sanitizationMiddleware,
@@ -20,46 +18,6 @@ import {
 
 export const adminRouter = express.Router();
 
-async function signup(req, res) {
-  let message = '';
-
-  if (req.method === 'POST') {
-    const { name, password } = req.body;
-
-    const validation = validationResult(req);
-
-    if (!validation.isEmpty()) {
-      return res.render('signup', {
-        message,
-        title: 'Nýskráning',
-        data: { name, password },
-        errors: validation.errors,
-      });
-    }
-
-    const hashedPassword = await hashPassword(password);
-    const user = await createUser({ name, password: hashedPassword });
-
-    if (user) {
-      return res.redirect('/login');
-    }
-
-    message = 'Villa kom upp við að nýskrá notanda';
-  }
-
-  return res.render('signup', {
-    message,
-    title: 'Nýskráning',
-    data: {},
-    errors: [],
-  });
-}
-
-adminRouter.get('/signup', catchErrors(signup));
-adminRouter.post('/signup',
-createUser,
-registrationValidationMiddleware,
-catchErrors(signup));
 
 async function index(req, res) {
   const events = await listEvents();
@@ -231,22 +189,6 @@ adminRouter.post(
   catchErrors(validationCheck),
   sanitizationMiddleware('description'),
   catchErrors(registerRoute)
-);
-
-adminRouter.get('/signup', handleSignup);
-adminRouter.post(
-  '/signup',
-
-  // Þetta notar strat að ofan til að skrá notanda inn
-  passport.authenticate('local', {
-    failureMessage: 'Notandanafn eða lykilorð vitlaust.',
-    failureRedirect: '/admin/signup',
-  }),
-
-  // Ef við komumst hingað var notandi skráður inn, senda á /admin
-  (req, res) => {
-    res.redirect('/admin/login');
-  }
 );
 
 adminRouter.get('/login', login);
