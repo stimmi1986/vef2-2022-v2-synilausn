@@ -1,3 +1,5 @@
+/*
+
 import passport from 'passport';
 import { Strategy } from 'passport-local';
 import { createUser, findById, findByUsername } from './users.js';
@@ -51,6 +53,8 @@ export const signUp = (req, res, next) => {
   })(req, res, next);
 };
 
-adminRoutes.get('/admin/signup', (req, res) => {
+indexRoutes.get('/signup', (req, res) => {
     res.render('signup'); 
   });
+
+  */
