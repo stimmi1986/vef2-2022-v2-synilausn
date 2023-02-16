@@ -4,8 +4,8 @@ import session from 'express-session';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import passport from './lib/login.js';
+import { handleSignup } from './lib/signup.js';
 import { isInvalid } from './lib/template-helpers.js';
-import { createUser } from './lib/users.js';
 import { adminRouter } from './routes/admin-routes.js';
 import { indexRouter } from './routes/index-routes.js';
 
@@ -75,7 +75,7 @@ app.get('/admin/signup', (req, res) => {
 app.post('/admin/signup', async (req, res) => {
   const { username, password } = req.body;
   
-  const user = await createUser(username, password);
+  const user = await handleSignup(req, res);
 
   if (user) {
     res.redirect('/admin/login');
