@@ -7,6 +7,7 @@ import {
   sanitizationMiddleware,
   xssSanitizationMiddleware,
 } from '../lib/validation.js';
+import { createUser, findByUsername } from './users.js';
 
 export const indexRouter = express.Router();
 
