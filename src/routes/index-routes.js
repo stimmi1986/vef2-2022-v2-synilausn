@@ -95,25 +95,25 @@ async function registerRoute(req, res) {
 }
 
 indexRouter.get('/signup', (req, res) => {
-  res.render('signup');
+  res.render('signup', { title: 'Nýskráning' });
 });
 indexRouter.post('/signup', async (req, res) => {
   const { username, password } = req.body;
-
+  
   if (!username || !password) {
-    return res.render('signup', { message: 'Notendanafn og lykilorð eru nauðsynleg' });
+    return res.render('signup');
   }
 
   const existingUser = await findByUsername(username);
 
   if (existingUser) {
-    return res.render('signup', { message: 'Notendanafn er þegar í notkun' });
+    return res.render('signup');
   }
 
   const user = await createUser(username, password);
 
   if (!user) {
-    return res.render('signup', { message: 'Ekki tókst að búa til notanda' });
+    return res.render('signup');
   }
 
   res.redirect('/');
