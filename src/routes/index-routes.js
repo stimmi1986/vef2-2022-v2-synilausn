@@ -2,12 +2,12 @@ import express from 'express';
 import { validationResult } from 'express-validator';
 import { catchErrors } from '../lib/catch-errors.js';
 import { listEvent, listEvents, listRegistered, register } from '../lib/db.js';
+import { createUser, findByUsername } from '../lib/users.js';
 import {
   registrationValidationMiddleware,
   sanitizationMiddleware,
   xssSanitizationMiddleware,
 } from '../lib/validation.js';
-import { createUser, findByUsername } from './users.js';
 
 export const indexRouter = express.Router();
 
