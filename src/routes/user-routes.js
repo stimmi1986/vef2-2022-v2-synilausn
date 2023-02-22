@@ -18,7 +18,7 @@ function login(req, res) {
     req.session.messages = [];
   }
 
-  return res.render('login', { message, title: 'Nýskráning' });
+  return res.render('login', { message, title: 'Innskráning' });
 }
 
 userRouter.get('/login', login);
@@ -37,15 +37,10 @@ userRouter.post(
   }
 );
 
-userRouter.get('/logout', (req, res) => {
-  // logout hendir session cookie og session
-  req.logout();
-  res.redirect('/');
-});
-
 userRouter.get('/register', (req, res) =>{
   res.render('register', { title: 'Nýskráning' })
 })
+
 userRouter.post('/register', async (req, res) => {
   const { username, password } = req.body;
 
@@ -65,32 +60,11 @@ userRouter.post('/register', async (req, res) => {
     return res.render('register');
   }
 
-  res.redirect('/login');
+  res.redirect('/admin');
 })
-/*
-indexRouter.get('/signup', (req, res) => {
-    res.render('signup', { title: 'Nýskráning' });
-  });
-  indexRouter.post('/signup', async (req, res) => {
-    const { username, password } = req.body;
-    
-    if (!username || !password) {
-      return res.render('signup');
-    }
-  
-    const existingUser = await findByUsername(username);
-  
-    if (existingUser) {
-      return res.render('signup');
-    }
-  
-    const user = await createUser(username, password);
-  
-    if (!user) {
-      return res.render('signup');
-    }
-  
-    res.redirect('/admin/login');
-  });
 
-*/
+userRouter.get('/logout', (req, res) => {
+  // logout hendir session cookie og session
+  req.logout();
+  res.redirect('/');
+});
