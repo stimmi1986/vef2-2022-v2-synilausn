@@ -60,7 +60,7 @@ userRouter.post('/register', async (req, res) => {
     return res.render('register');
   }
 
-  res.redirect('/admin');
+  res.redirect('/');
 })
 
 userRouter.get('/logout', (req, res) => {
