@@ -6,7 +6,7 @@ export const userRouter = express.Router();
 
 function login(req, res) {
   if (req.isAuthenticated()) {
-    return res.redirect('/login');
+    return res.redirect('/admin');
   }
 
   let message = '';
@@ -60,10 +60,10 @@ userRouter.post('/register', async (req, res) => {
     return res.render('register');
   }
 
-  res.redirect('/');
+  res.redirect('/login');
 })
 
-userRouter.get('/logout', (req, res) => {
+userRouter.get('/admin/logout', (req, res) => {
   // logout hendir session cookie og session
   req.logout();
   res.redirect('/');
