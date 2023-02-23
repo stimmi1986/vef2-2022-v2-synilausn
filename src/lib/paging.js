@@ -15,3 +15,5 @@ export async function getPaging(total, page, size) {
     nextPage,
   };
 }
+
+export default getPaging();

@@ -53,11 +53,12 @@ passport.deserializeUser(async (id, done) => {
 // Hjálpar middleware sem athugar hvort notandi sé innskráður og hleypir okkur
 // þá áfram, annars sendir á /login
 export function ensureLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
+
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
+    return res.redirect('login');
   }
 
-return res.redirect(`/`);
+  return next();
 }
 
 export default passport;

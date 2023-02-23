@@ -65,6 +65,6 @@ userRouter.post('/register', async (req, res) => {
 
 userRouter.get('/admin/logout', (req, res) => {
   // logout hendir session cookie og session
-  req.logout();
+  req.logout(() => {});
   res.redirect('/');
 });

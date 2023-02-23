@@ -1,8 +1,7 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
 import { catchErrors } from '../lib/catch-errors.js';
-import { listEvent, listEvents, listRegistered, register } from '../lib/db.js';
-import { getPaging } from '../lib/paging.js';
+import { countEvents, listEvent, listEvents, listRegistered, register } from '../lib/db.js';
 import {
   registrationValidationMiddleware,
   sanitizationMiddleware,
@@ -12,12 +11,26 @@ import {
 export const indexRouter = express.Router();
 
 async function indexRoute(req, res) {
-  const events = await listEvents();
+  const page = parseInt(req.query.page) || 1;
+  const perPage = 3;
+  const offset = (page - 1) * perPage;
+
+  const events = await listEvents(perPage, offset);
+  const totalEvents = await countEvents();
+  const totalPages = Math.ceil(totalEvents / perPage);
 
   res.render('index', {
     title: 'Viðburðasíðan',
     admin: false,
     events,
+    paging: {
+      page,
+      totalPages,
+      hasPrev: page > 1,
+      prevUrl: `/?offset=${offset - perPage}&page=${page - 1}`,
+      hasNext: page < totalPages,
+      nextUrl: `/?offset=${offset + perPage}&page=${page + 1}`,
+    },
   });
 }
 
@@ -30,16 +43,13 @@ async function eventRoute(req, res, next) {
   }
 
   const registered = await listRegistered(event.id);
-  const paging = getPaging(registered.length, req.query.page);
-
+  
   return res.render('event', {
-    admin: false,
     title: `${event.name} — Viðburðasíðan`,
-    event: event,
-    registered: registered,
+    event,
+    registered,
     errors: [],
     data: {},
-    paging: paging,
   });
 }
 
@@ -69,11 +79,9 @@ async function validationCheck(req, res, next) {
 
   if (!validation.isEmpty()) {
     return res.render('event', {
-      admin: false,
       title: `${event.name} — Viðburðasíðan`,
       data,
-      event: event,
-      paging: paging,
+      event,
       registered,
       errors: validation.errors,
     });
