@@ -2,6 +2,7 @@ import express from 'express';
 import { validationResult } from 'express-validator';
 import { catchErrors } from '../lib/catch-errors.js';
 import { listEvent, listEvents, listRegistered, register } from '../lib/db.js';
+import { getPaging } from '../lib/paging.js';
 import {
   registrationValidationMiddleware,
   sanitizationMiddleware,
@@ -29,13 +30,16 @@ async function eventRoute(req, res, next) {
   }
 
   const registered = await listRegistered(event.id);
+  const paging = getPaging(registered.length, req.query.page);
 
   return res.render('event', {
+    admin: false,
     title: `${event.name} — Viðburðasíðan`,
-    event,
-    registered,
+    event: event,
+    registered: registered,
     errors: [],
     data: {},
+    paging: paging,
   });
 }
 
@@ -65,9 +69,11 @@ async function validationCheck(req, res, next) {
 
   if (!validation.isEmpty()) {
     return res.render('event', {
+      admin: false,
       title: `${event.name} — Viðburðasíðan`,
       data,
-      event,
+      event: event,
+      paging: paging,
       registered,
       errors: validation.errors,
     });
