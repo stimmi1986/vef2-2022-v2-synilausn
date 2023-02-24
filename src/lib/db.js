@@ -75,10 +75,6 @@ export async function createEvent({ name, slug, description } = {}) {
   return null;
 }
 
-export async function countEvents() {
-  const { rows } = await pool.query('SELECT COUNT(*) FROM events');
-  return rows[0].count;
-}
 
 // Updatear ekki description, erum ekki að útfæra partial update
 export async function updateEvent(id, { name, slug, description } = {}) {
