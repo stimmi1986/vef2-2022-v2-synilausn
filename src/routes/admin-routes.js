@@ -10,7 +10,6 @@ import {
 } from '../lib/db.js';
 import { ensureLoggedIn } from '../lib/login.js';
 import { slugify } from '../lib/slugify.js';
-import { paging, setPagenumber } from '../lib/utils.js';
 import {
   registrationValidationMiddleware,
   sanitizationMiddleware,
@@ -30,8 +29,6 @@ async function index(req, res) {
     data: {},
     title: 'Viðburðir — umsjón',
     admin: true,
-    paging,
-    setPagenumber
   });
 }
 

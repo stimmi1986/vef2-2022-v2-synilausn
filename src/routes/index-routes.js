@@ -1,8 +1,7 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
 import { catchErrors } from '../lib/catch-errors.js';
-import { countEvents, listEvent, listEvents, listRegistered, register } from '../lib/db.js';
-import { paging, setPagenumber } from '../lib/utils.js';
+import { listEvent, listEvents, listRegistered, register } from '../lib/db.js';
 import {
   registrationValidationMiddleware,
   sanitizationMiddleware,
@@ -13,33 +12,12 @@ import {
 export const indexRouter = express.Router();
 
 async function indexRoute(req, res) {
-  const currentPage = setPagenumber(req.query.page);
-  const limit = 10;
-  const offset = (currentPage - 1) * limit;
   const events = await listEvents();
-
-  const totalEvents = await countEvents();
-  const eventsLength = events.length;
-  const baseUrl = req.originalUrl.replace(/(\?|&)page=\d+/, '');
-  const pagination = await paging({
-    page: currentPage,
-    limit,
-    offset,
-    totalEvents,
-    eventsLength,
-    baseUrl,
-  });
 
   res.render('index', {
     title: 'Viðburðasíðan',
     admin: false,
     events,
-    paging: {
-      hasPrev: pagination.hasPrev,
-      prevUrl: pagination.prevUrl,
-      hasNext: pagination.hasNext,
-      nextUrl: pagination.nextUrl,
-    },
   });
 }
 

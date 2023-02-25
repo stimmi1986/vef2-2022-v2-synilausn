@@ -172,20 +172,6 @@ export async function listEventByName(name) {
   return null;
 }
 
-export async function countEvents() {
-  const q = `
-    SELECT COUNT(*) as count
-    FROM events
-  `;
-  const result = await query(q);
-
-  if (result && result.rowCount === 1) {
-    return parseInt(result.rows[0].count);
-  }
-
-  return null;
-}
-
 export async function listRegistered(event) {
   const q = `
     SELECT
