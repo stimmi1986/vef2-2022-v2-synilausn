@@ -122,7 +122,7 @@ async function registerRoute(req, res) {
     return res.redirect('/admin');
   }
 
-  return res.render('error');
+  return res.render('error', {title});
 }
 
 async function updateRoute(req, res) {
