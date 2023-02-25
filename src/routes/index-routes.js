@@ -16,7 +16,7 @@ async function indexRoute(req, res) {
   const currentPage = setPagenumber(req.query.page);
   const limit = 10;
   const offset = (currentPage - 1) * limit;
-  const events = await listEvents(offset, limit);
+  const events = await listEvents();
 
   const totalEvents = await countEvents();
   const eventsLength = events.length;
@@ -114,7 +114,7 @@ async function registerRoute(req, res) {
     return res.redirect(`/${event.slug}`);
   }
 
-  return res.render('error', {title});
+  return res.render('error');
 }
 
 indexRouter.get('/', catchErrors(indexRoute));

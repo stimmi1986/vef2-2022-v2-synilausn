@@ -122,7 +122,7 @@ async function registerRoute(req, res) {
     return res.redirect('/admin');
   }
 
-  return res.render('error', {title});
+  return res.render('error');
 }
 
 async function updateRoute(req, res) {
@@ -143,7 +143,7 @@ async function updateRoute(req, res) {
     return res.redirect('/admin');
   }
 
-  return res.render('error', {title} );
+  return res.render('error');
 }
 
 async function eventRoute(req, res, next) {
