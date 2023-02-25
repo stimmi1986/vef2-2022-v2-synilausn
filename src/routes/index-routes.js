@@ -1,22 +1,45 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
 import { catchErrors } from '../lib/catch-errors.js';
-import { listEvent, listEvents, listRegistered, register } from '../lib/db.js';
+import { countEvents, listEvent, listEvents, listRegistered, register } from '../lib/db.js';
+import { paging, setPagenumber } from '../lib/utils.js';
 import {
   registrationValidationMiddleware,
   sanitizationMiddleware,
   xssSanitizationMiddleware,
 } from '../lib/validation.js';
 
+
 export const indexRouter = express.Router();
 
 async function indexRoute(req, res) {
-  const events = await listEvents();
+  const currentPage = setPagenumber(req.query.page);
+  const limit = 10;
+  const offset = (currentPage - 1) * limit;
+  const events = await listEvents(offset, limit);
+
+  const totalEvents = await countEvents();
+  const eventsLength = events.length;
+  const baseUrl = req.originalUrl.replace(/(\?|&)page=\d+/, '');
+  const pagination = await paging({
+    page: currentPage,
+    limit,
+    offset,
+    totalEvents,
+    eventsLength,
+    baseUrl,
+  });
 
   res.render('index', {
     title: 'Viðburðasíðan',
     admin: false,
     events,
+    paging: {
+      hasPrev: pagination.hasPrev,
+      prevUrl: pagination.prevUrl,
+      hasNext: pagination.hasNext,
+      nextUrl: pagination.nextUrl,
+    },
   });
 }
 
@@ -91,7 +114,7 @@ async function registerRoute(req, res) {
     return res.redirect(`/${event.slug}`);
   }
 
-  return res.render('error');
+  return res.render('error', {title});
 }
 
 indexRouter.get('/', catchErrors(indexRoute));
