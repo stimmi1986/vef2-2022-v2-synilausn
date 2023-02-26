@@ -45,19 +45,19 @@ userRouter.post('/register', async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    return res.render('register');
+    return res.render('register', {title});
   }
 
   const existingUser = await findByUsername(username);
 
   if (existingUser) {
-    return res.render('register');
+    return res.render('register', {title});
   }
 
   const user = await createUser(username, password);
 
   if (!user) {
-    return res.render('register');
+    return res.render('register', {title});
   }
 
   res.redirect('/login');

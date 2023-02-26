@@ -137,10 +137,10 @@ async function updateRoute(req, res) {
   });
 
   if (updated) {
-    return res.redirect('/admin');
+    return res.redirect('/admin', {title});
   }
 
-  return res.render('error');
+  return res.render('error', {title});
 }
 
 async function eventRoute(req, res, next) {
